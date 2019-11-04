@@ -22,23 +22,27 @@ const resolvers = {
       return link
     },
     updateLink:(parent, args)=>{
-      var found = links.findIndex((element) => element.id === args.id );
-      if(found != FALSE){
-        links = links[found].url = args.url;
-        links = links[found].description = args.description;
-        return links[found];
+      const found = links.find( (element) => element.id == args.id );
+      
+      if(found != null && found != undefined){
+        const index = links.indexOf(found);
+        links[index].url = args.url;
+        links[index].description = args.description;
+        return links[index];
       }else{
-        console.log("Não há o que atualizar, turu pom");
+        console.log("There isn't what to update");
         return null;
       }
     },
-    deleteLink: ()=>{
-      var found = links.findIndex((element) => element.id === args.id );
-      if(found != FALSE){
-        links.splice(found,1);
+    deleteLink: (parent, args)=>{
+      const found = links.find( (element) => element.id == args.id );
+      if(found != null && found != undefined){
+        const index = links.indexOf(found);
+        links.splice(index,1);
+        return true 
       }else{
-        console.log("Não há o que deletar, turu pom");
-        return null;
+        console.log("There isn't what to delete");
+        return false;
       }
     }
   },
@@ -75,6 +79,14 @@ server.start(() => console.log(`Server is running on http://localhost:4000`));
           url:"www.graphql.org"){
         id
       }
+      updateLink(id: "link-2", 
+                 description:"Teste", 
+                 url:"Teste"){
+        id
+        description
+        url
+      }
+      deleteLink(id: "link-2")
     }
 
 */
